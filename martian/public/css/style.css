@@ -62,13 +62,19 @@ body {
 
 .converter_container {
   height: 100%;
-  width: 70%;
+  width: 80%;
   display: inline-block;
+  position: relative;
+}
+
+svg {
+  margin-top: 40px;
+  height: 450px;
 }
 
 .earth_container {
   height: 100%;
-  width: 30%;
+  width: 20%;
   display: inline-block;
   display: flex;
   align-items: flex-end;
@@ -79,6 +85,24 @@ body {
   margin: 2rem 2rem 0 0;
   height: 5rem;
   width: 5rem;
+}
+
+.glow {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.arrow {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 240px;
+  right: 450px;
 }
 
 /*-------------------------------*/
@@ -111,7 +135,7 @@ body {
   margin: 0.5rem 0;
   width: 10rem;
   height: 1.5rem;
-  border: 2px solid #555;
+  border: 3px solid #555;
   border-radius: 5px;
 }
 
@@ -121,7 +145,7 @@ body {
   display: block;
   width: 10rem;
   height: 1.5rem;
-  border: 2px solid #555;
+  border: 3px solid #555;
   border-radius: 5px;
 }
 
