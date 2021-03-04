@@ -18,8 +18,12 @@ function getNodeList(selector) {
     return utill.$all(selector);
 }
 
+function getInputStr(node) {
+
+}
+
 // fillSlices();
 
 
 // const MYPROMISE = new MyPromise();
-// console.log(MYPROMISE)
+// console.log(MYPROMISE)ㅇㄹㄴ

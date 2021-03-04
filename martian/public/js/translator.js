@@ -4,8 +4,8 @@
 
 /*
 ! 모든 함수는 순수하게(의존성을 낮추기) 만들기. 매직넘버 없게 주의.
-todo - [ ] 16진수 -> 문자열 변환 함수 만들기
-todo - [x] 문자열 -> 16진수 변환 함수 만들기
+todo - [x] 16진수 -> 문자열 변환 함수 만들기
+todo - [x] 문자열 -> 16진수(배열) 변환 함수 만들기
 todo - [ ] 각 16진수 글자와 각 16진수 글자에 해당하는 각도(화살표가 회전해야 하는 각도)를 key-value로 저장하기
 todo - [ ] 수신한/입력받은 16진수를 2초마다 하나씩 가리키는 함수(화살표의 각도를 돌려주는 애니메이션 함수) 만들기
 todo - [ ] 수신한 16진수를 송수신정보에 출력해주는 함수 만들기
@@ -22,15 +22,24 @@ import utill from './utill.js';
 //     console.log(textArr)
 // }
 
-//문자열 -> 10진수 -> 16진수
-function convertToHexadecimal (str){
-    const decArr = [];
-    const letterArr = str.split('');
-    letterArr.forEach(letter => decArr.push(letter.charCodeAt(0)));
-    return decArr.reduce((acc, cur) => acc += cur.toString(16), '');
+//문자열 -> 10진수 -> 16진수 (배열로 return)
+function convertToHexadecimal (str) {
+    return str.split('')
+    .map(letter => letter.charCodeAt(0))
+    .map(cur => cur.toString(16));
 }
 
+//16진수 -> 10진수 -> 문자열
+function convertToString (hexArr) {
+    return hexArr
+    .map(el => parseInt(el, 16))
+    .reduce((acc, el) => acc += String.fromCharCode(el), '');
+}
+
+
+//test code
 console.log(convertToHexadecimal('hello'));
+console.log(convertToString(["68", "65", "6c", "6c", "6f"]));
 
 /*
 *svg 돌림판을 동적으로 만들어주는 로직. figma로 가져오는 방식으로 대체했기 때문에 현재는 쓰지 않음.*
