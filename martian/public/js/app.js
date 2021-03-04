@@ -5,7 +5,8 @@
 /*
 ! Dom 핸들링은 여기서한다. translator.js는 오로지 로직에 관련된 것만 갖게 할 것.
 todo - [x] translator 돌림판 위의 text node를 배열에 담아오는 함수 만들기
-todo - [ ] setTimeout으로 미리 입력된 text를 화성으로 보내는 함수 만들기. (발송 되기 전 지구어를 아스키코드로 먼저 변환한다.)
+todo - [x] IIFE함수로 자동시작시키는 함수 만들기
+todo - [ ] setTimeout으로 미리 입력된 text를 5초에 한번씩 화성으로 보내는 함수 만들기. (발송 되기 전 지구어를 아스키코드로 먼저 변환한다.)
 todo - [ ] '해석하기', '지구로 보내기'버튼에 클릭이벤트 걸어주기
 todo - [ ] MyPromise 생성자 미완 - 완성 시 활용하는 방법으로 리팩토링할 것.
 */
@@ -14,16 +15,25 @@ todo - [ ] MyPromise 생성자 미완 - 완성 시 활용하는 방법으로 리
 import { convertToHexadecimal } from "./translator.js";
 import utill from "./utill.js";
 
-function getNodeList(selector) {
-    return utill.$all(selector);
+
+const getNodeList = selector => utill.$all(selector);
+
+//변환기 구동시키기 = text node를 가져오기
+function activateTranslator(paraObj){
+    return getNodeList(paraObj.selector)
 }
 
-function getInputStr(node) {
+//5초마다 지구어 보내기
+function sendSignalToMars(strArr) {
+    strArr.
+    setTimeout()
 
 }
 
-// fillSlices();
-
+(function init(){
+    sendSignalToMars(["hello", "mars", "howalive?"]);
+    activateTranslator({selector : "path"});
+})();
 
 // const MYPROMISE = new MyPromise();
-// console.log(MYPROMISE)ㅇㄹㄴ
+// console.log(MYPROMISE)
