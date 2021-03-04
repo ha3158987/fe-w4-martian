@@ -15,24 +15,27 @@ todo - [ ] MyPromise 생성자 미완 - 완성 시 활용하는 방법으로 리
 import { convertToHexadecimal } from "./translator.js";
 import utill from "./utill.js";
 
-
-const getNodeList = selector => utill.$all(selector);
+const DOMREF = {
+    textList : utill.$all("path"),
+    hexToStrBtn : utill.$(".hexadecimal_translate"),
+    sendToEarthBtn : utill.$(".languag_send"),
+    sendInput: utill.$(".language_input")
+}
 
 //변환기 구동시키기 = text node를 가져오기
-function activateTranslator(paraObj){
-    return getNodeList(paraObj.selector)
+function activateTranslator(textList){
+    return getNodeList(textList);
 }
 
 //5초마다 지구어 보내기
 function sendSignalToMars(strArr) {
     strArr.
     setTimeout()
-
 }
 
 (function init(){
     sendSignalToMars(["hello", "mars", "howalive?"]);
-    activateTranslator({selector : "path"});
+    activateTranslator(DOMREF.textList);
 })();
 
 // const MYPROMISE = new MyPromise();
