@@ -9,7 +9,9 @@ const _ = {
     removeClass: (node, className) => node.classList.remove(className),
     setToggle: (node, className) => node.classList.toggle(className),
     contains: (node, className) => node.classList.contains(className),
-    removeTransform: (node, attributeName) => node.removeAttribute(attributeName)
+    removeTransform: (node, attributeName) => node.removeAttribute(attributeName),
+    pipe: (...fns) => arg => fns.reduce((arg, fn) => fn(arg), arg),
+    go: (arg, ...rest) => rest.reduce((arg, fn) => fn(arg), arg)
 }
 
 export default _;
