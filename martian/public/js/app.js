@@ -48,14 +48,11 @@ function sendWord(str, wholeStr) {
     const receivedWord = convertToHexadecimal(str);
     receivedWord.forEach(letterPair => {
         const oneLetterArr = splitString(letterPair); //결과:["6", "8"]
-        oneLetterArr.forEach(letter => {
-            
-        })
-        console.log("oneLetter", oneLetterArr);
+        // oneLetterArr.forEach(letter => {
+        // })
+    console.log("oneLetter", oneLetterArr);
     })
-
     // viewBox.innerText = wholeStr; //이건 나중에 '해석하기'버튼이 눌리면 보여져야 함.
-    
     viewBox.innerText = receivedWord;
 
     console.log("str:", str);
