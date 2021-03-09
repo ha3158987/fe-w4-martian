@@ -35,55 +35,50 @@ const DOMREF = {
     sendInput: _.$(".language_input")
 }
 
-//1. 5초마다 지구어 단어를 하나씩 보내기
-function sendSignalToMars(strArr) {
-    let wholeStr = '';
-    strArr.forEach((el, i) => {
-        wholeStr += ` ${el}`;
-        setTimeout(() => sendWord(el, wholeStr), (i + 1) * 1000);
-    })
-}
+const splitString = (str) => str.split('');
+
 const delay = (data, ms) => new Promise ((resolve) => setTimeout(() => resolve(data), ms));
-//2. 하나의 알파벳 단위로 단어를 쪼갠다.
-const splitIntoAlphabet = (str) => str.split('');
-const sendHexOneByOne = (pairArr) => { //pairArr: ["68", "65", "6c", "6c", "6f"]
-    for (let el of pairArr) {
-        new Promise ((resolve) => {
-            setTimeout(() => resolve(el), 2000);
-        }).then((hexLetter) => hexLetter);
+
+function analyzeWord(str) {
+    const splitedWord = splitString(str);
+    return convertToHexadecimal(splitedWord);
+}
+
+async function getHexOneByOne(hex){
+    for (let oneHex of hex) {
+        activateTranslator(oneHex);
+        await delay(oneHex, 1000);
     }
-    // pairArr.forEach((el, i) => {
-    //     setTimeout(() => console.log(el), i * 2000);
-    // })
-    //     new Promise ((resolve) => {
-    //         setTimeout(() => resolve(el), 2000);
-    //     }).then((hexLetter) => hexLetter);
-    // }
-};
-//delay 함수
+}
+
 
 //받은 지구어 16진수 아스키코드로 변환해서 출력
-function sendWord(str) {
+async function getWordFromEarth(str) {
     const viewBox = DOMREF.resultBox;
-    const receivedWord = _.pipe(
-        splitIntoAlphabet,
-        convertToHexadecimal,
-        sendHexOneByOne
-    )(str)
+    const hexArr = analyzeWord(str);
 
-    console.log(receivedWord);
+    for (let hex of hexArr) {
+        getHexOneByOne(hex);
+        await delay(hex, 2000);
+    }
+    // const receivedWord = _.pipe(
+    //     splitIntoAlphabet,
+    //     convertToHexadecimal,
+    //     sendHexOneByOne
+    // )(str)
 
-    viewBox.innerText = receivedWord;
+    viewBox.innerText = hexArr;
 }
 
 //변환기 구동시키기 = text node를 가져오기/화살표 이동거리 계산하기/화살표 움직이기/해석하기 버튼 활성화/해석결과 보여주기
-function activateTranslator(textList){
-    return textList;
+function activateTranslator(letter){
+    console.log(letter);
+    return letter;
 }
 
 
 (function init(){
-    sendSignalToMars(["hello"]);
+    getWordFromEarth("howalive");
     activateTranslator(DOMREF.textList);
     console.log(DOMREF.textList)
 })();
