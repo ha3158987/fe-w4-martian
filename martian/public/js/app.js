@@ -3,73 +3,67 @@
 /* --------------------------------------------------------------------- */
 
 /*
-! Dom 핸들링은 여기서한다. translator.js는 오로지 로직에 관련된 것만 갖게 할 것.
-todo - [x] translator 돌림판 위의 text node를 배열에 담아오는 함수 만들기
-todo - [x] IIFE함수로 자동시작시키는 함수 만들기
-todo - [x] setTimeout으로 미리 입력된 text를 5초에 한번씩 화성으로 보내는 함수 만들기. (발송 되기 전 지구어를 아스키코드로 먼저 변환한다.)
-todo - [ ] '해석하기', '지구로 보내기'버튼에 클릭이벤트 걸어주기
-todo - [ ] MyPromise 생성자 미완 - 완성 시 활용하는 방법으로 리팩토링할 것.
+todo [x] 지구로부터 string을 받는다 -> 받은 string을 split해준다 -> 16진수로 변환한다.
+todo [x] 한 쌍의 16진수를 다시 하나의 글자로 쪼개서 반복문을 돌린다. 한 글자가 반복문에 들어올 때마다 실행되어야 하는 일들:
+    1) 화살표 움직이기
+    2) (화살표 움직임이 끝나면)textbox에 받은 글자 누적해서 보여주기
+    3) 해당 글씨 반짝이기
+    4) (2번이 끝나면)해석하기버튼 활성화하기
 */
 
 // import MyPromise from "./myPromise.js";
 import { convertToHexadecimal , convertToString } from "./translator.js";
+import rotateArrow from "./arrowActivator.js";
 import utill from "./utill.js";
 const _ = utill;
 
 const DOMREF = {
     textList : _.$all("path"),
+    arrow: _.$(".arrow"),
     hexToStrBtn : _.$(".hexadecimal_translate"),
     resultBox: _.$(".hexadecimal_result"),
     sendToEarthBtn : _.$(".languag_send"),
     sendInput: _.$(".language_input")
 }
 
-//변환기 구동시키기 = text node를 가져오기/화살표 이동거리 계산하기/화살표 움직이기/해석하기 버튼 활성화/해석결과 보여주기
-function activateTranslator(textList){
-    return textList;
-}
-
-//5초마다 지구어 보내기
-function sendSignalToMars(strArr) {
-    let wholeStr = '';
-    strArr.forEach((el, i) => {
-        wholeStr += ` ${el}`;
-        setTimeout(() => sendWord(el, wholeStr), (i + 1) * 1000);
-    })
-}
-
-//배열로 문자열을 쪼개고, 반복문을 돌리기
-//한 글자마다 실행되어야 할 함수: 화살표 돌리기, 받은 글자 viewBox에 보여주기
 const splitString = (str) => str.split('');
 
-//받은 지구어 16진수 아스키코드로 변환해서 출력
-function sendWord(str, wholeStr) {
-    const viewBox = DOMREF.resultBox;
-    const receivedWord = convertToHexadecimal(str);
-    receivedWord.forEach(letterPair => {
-        const oneLetterArr = splitString(letterPair); //결과:["6", "8"]
-        oneLetterArr.forEach(letter => {
-            
-        })
-        console.log("oneLetter", oneLetterArr);
-    })
+const delay = ms => new Promise ((resolve) => setTimeout(() => resolve(), ms));
 
-    // viewBox.innerText = wholeStr; //이건 나중에 '해석하기'버튼이 눌리면 보여져야 함.
-    
-    viewBox.innerText = receivedWord;
-
-    console.log("str:", str);
-    console.log("receivedWord", receivedWord);
-    console.log(wholeStr);
+function analyzeWord(str) {
+    const splitedWord = splitString(str);
+    return convertToHexadecimal(splitedWord);
 }
 
+async function getHexOneByOne(hex){
+    for (let oneHex of hex) {
+        activateTranslator(oneHex);
+        await delay(2000);
+    }
+}
 
+async function getWordFromEarth(str) {
+    const hexArr = analyzeWord(str);
+    for (let hex of hexArr) {
+        getHexOneByOne(hex);
+        await delay(5000);
+    }
+}
+
+function fillUpTextBox(str) {
+    const viewBox = DOMREF.resultBox;
+    viewBox.innerText += str;
+    //매 두번쨰마다 template literal로  ' '도 같이 추가.
+}
+
+//변환기 구동시키기 = text node를 가져오기/화살표 이동거리 계산하기/화살표 움직이기/해석하기 버튼 활성화/해석결과 보여주기
+function activateTranslator(letter){
+    fillUpTextBox(letter);
+    rotateArrow(letter);
+}
 
 (function init(){
-    sendSignalToMars(["hello", "mars"]);
-    activateTranslator(DOMREF.textList);
-    console.log(DOMREF.textList)
+    getWordFromEarth("howalive");
 })();
 
-// const MYPROMISE = new MyPromise();
-// console.log(MYPROMISE)
+export default DOMREF;
