@@ -48,6 +48,7 @@ async function getWordFromEarth(str) {
         getHexOneByOne(hex);
         await delay(5000);
     }
+    //해석하기 버튼 활성화
 }
 
 function fillUpTextBox(str) {
@@ -59,11 +60,9 @@ function fillUpTextBox(str) {
 //변환기 구동시키기 = text node를 가져오기/화살표 이동거리 계산하기/화살표 움직이기/해석하기 버튼 활성화/해석결과 보여주기
 function activateTranslator(letter){
     fillUpTextBox(letter);
-    rotateArrow(letter);
+    rotateArrow(letter, DOMREF.hexToStrBtn, DOMREF.arrow);
 }
 
 (function init(){
     getWordFromEarth("howalive");
 })();
-
-export default DOMREF;
