@@ -25,7 +25,6 @@ import { convertToHexadecimal , convertToString } from "./translator.js";
 import utill from "./utill.js";
 const _ = utill;
 
-//DOM 요소 저장
 const DOMREF = {
     textList : _.$all("path"),
     arrow: _.$(".arrow"),
@@ -37,7 +36,7 @@ const DOMREF = {
 
 const splitString = (str) => str.split('');
 
-const delay = (data, ms) => new Promise ((resolve) => setTimeout(() => resolve(data), ms));
+const delay = ms => new Promise ((resolve) => setTimeout(() => resolve(), ms));
 
 function analyzeWord(str) {
     const splitedWord = splitString(str);
@@ -47,38 +46,31 @@ function analyzeWord(str) {
 async function getHexOneByOne(hex){
     for (let oneHex of hex) {
         activateTranslator(oneHex);
-        await delay(oneHex, 1000);
+        await delay(1000);
     }
 }
 
-
-//받은 지구어 16진수 아스키코드로 변환해서 출력
 async function getWordFromEarth(str) {
-    const viewBox = DOMREF.resultBox;
     const hexArr = analyzeWord(str);
-
     for (let hex of hexArr) {
         getHexOneByOne(hex);
-        await delay(hex, 2000);
+        await delay(2000);
     }
-    // const receivedWord = _.pipe(
-    //     splitIntoAlphabet,
-    //     convertToHexadecimal,
-    //     sendHexOneByOne
-    // )(str)
+}
 
-    viewBox.innerText = hexArr;
+function fillUpTextBox(str) {
+    const viewBox = DOMREF.resultBox;
+    viewBox.innerText += str;
+    //매 두번쨰마다 template literal로  ' '도 같이 추가.
 }
 
 //변환기 구동시키기 = text node를 가져오기/화살표 이동거리 계산하기/화살표 움직이기/해석하기 버튼 활성화/해석결과 보여주기
 function activateTranslator(letter){
-    console.log(letter);
-    return letter;
+    fillUpTextBox(letter);
+
 }
 
 
 (function init(){
     getWordFromEarth("howalive");
-    activateTranslator(DOMREF.textList);
-    console.log(DOMREF.textList)
 })();
