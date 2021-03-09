@@ -105,6 +105,7 @@ svg {
   position: absolute;
   top: 240px;
   right: 450px;
+  transition: transform 500ms;
 }
 
 /*-------------------------------*/
