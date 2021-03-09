@@ -14,6 +14,7 @@ function getPrevArc(arrowNode) {
 }
 
 function moveArrow(arrow, targetDeg, arrowLocation) {
+    console.log(arrowLocation)
     arrow.style.transform = `rotate(${targetDeg}deg)`;
 }
 
